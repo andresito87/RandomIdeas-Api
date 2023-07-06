@@ -1,0 +1,14 @@
+{
+  "name": "randomideas-proyect",
+  "version": "1.0.0",
+  "description": "a fullstack app about random ideas",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "andres podadera",
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
