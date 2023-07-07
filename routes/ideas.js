@@ -1,47 +1,84 @@
 const express = require('express');
 const router = express.Router();
+const Idea = require('../models/Idea');
 
-const ideas = [
-    {
-        id: 1,
-        text: 'Positive NewsLetter, a newsletter that only shares positive, uplifting news',
-        tag: 'Technology',
-        username: 'TonyStark',
-        date: '2022-01-02',
-    },
-    {
-        id: 2,
-        text: 'Milk cartons that turn a different color the older that your milk is getting',
-        tag: 'Inventions',
-        username: 'SteveRogers',
-        date: '2022-01-02',
-    },
-    {
-        id: 3,
-        text: 'ATM location app which lets you know where the closest ATM is and if it is in service',
-        tag: 'Software',
-        username: 'BruceBanner',
-        date: '2022-01-02',
-    },
-];
+// Get all ideas
+router.get('/', async (req, res) => {
+    try {
+        const ideas = await Idea.find();
 
-
-router.get('/', (req, res) => {
-    res.json({ success: true, data: ideas });
+        return res.status(200)
+            .json({ success: true, data: ideas });
+    } catch (err) {
+        console.error(err);
+        res.status(500)
+            .json({ success: false, error: 'Server error' });
+    }
 });
 
-router.get('/:id', (req, res) => {
-    const foundIdea = ideas.find((idea) => idea.id === parseInt(req.params.id));
+// Get single idea by id
+router.get('/:id', async (req, res) => {
 
-    if (!foundIdea) {
-        return res.status(404)
-            .json({ success: false, error: 'Resource not found' });
+    try {
+        const idea = await Idea.findById(req.params.id);
+        res.json({ success: true, data: idea });
+    } catch (err) {
+        console.error(err);
+        res.status(500)
+            .json({ success: false, error: 'Server error' });
     }
 
-    res.json({
-        success: true,
-        data: foundIdea,
+});
+
+// Add a new idea
+router.post('/', async (req, res) => {
+    const idea = new Idea({
+        text: req.body.text,
+        tag: req.body.tag,
+        username: req.body.username
     });
+
+    try {
+        const savedIdea = await idea.save();
+
+        return res.status(201)
+            .json({ success: true, data: savedIdea });
+    } catch (err) {
+        console.error(err);
+        res.status(500)
+            .json({ success: false, error: 'Server error' });
+    }
+});
+
+// Update an idea
+router.put('/:id', async (req, res) => {
+    try {
+        const updatedIdea = await Idea.findByIdAndUpdate(req.params.id, {
+            $set: {
+                text: req.body.text,
+                tag: req.body.tag
+            }
+        },
+            { new: true }
+        );
+        res.json({ success: true, data: updatedIdea });
+    } catch (err) {
+        console.error(err);
+        res.status(500)
+            .json({ success: false, error: 'Server error' });
+    }
+});
+
+// Delete an idea
+router.delete('/:id', async (req, res) => {
+    try {
+        await Idea.findByIdAndRemove(req.params.id);
+        res.json({ success: true, data: {} });
+    } catch (err) {
+        console.error(err);
+        res.status(500)
+            .json({ success: false, error: 'Server error' });
+    }
 });
 
 module.exports = router;
