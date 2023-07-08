@@ -5,7 +5,9 @@
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
-    "dev": "nodemon server.js"
+    "dev": "nodemon server.js",
+    "build": "npm i && cd client && npm i && cd .. && npm run start",
+    "deploy": "cd client && npm run build && npm run dev"
   },
   "author": "andres podadera",
   "license": "MIT",
