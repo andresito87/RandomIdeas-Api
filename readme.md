@@ -7,7 +7,7 @@ This proyect is part of the course **Modern JS From The Beginning 2.0** [Brad Tr
 
 ## User Interface
 
-<img src="" width="500">
+<img src="image-app.png" width="500">
 
 ## Tecnologies
 
@@ -23,7 +23,7 @@ This proyect is part of the course **Modern JS From The Beginning 2.0** [Brad Tr
 - MongoDB
 - Mongoose
 - Postman
-- Heroku
+- Render
 
 ## Aplication Deployed Link
 
